@@ -72,7 +72,7 @@ namespace MS1_DataSimulator
             }
 
             double intensitySum = intValues.Sum();
-            double intensityMultipler = totalSpectrumIntensity / intensitySum;
+            double intensityMultipler = TotalSpectrumIntensity / intensitySum;
 
             for (int i = 0; i < intValues.Count; i++)
             {
