@@ -13,7 +13,7 @@ namespace MS1_DataSimulator
 
         public SplitPeptides((int, int) contiguousRange, double trainingFraction)
         {
-            Random rnd = new Random();
+            Random rnd = new(42);
 
             for (int i = contiguousRange.Item1; i < contiguousRange.Item2; i++)
             {

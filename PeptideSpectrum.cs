@@ -12,20 +12,18 @@ namespace MS1_DataSimulator
     internal class PeptideSpectrum
     {
         public readonly PeptideWithSetModifications peptideWithSetModifications;
-        public readonly int[] chargeStates;
-        public readonly double[] envelopeAbundances;
+        public readonly ChargeStatesAndEnvelopeAbundances chargeStatesAndEnvelopeAbundances;
         public readonly double[] mzValues;
         public readonly double[] intensityValues;
-        public readonly double totalSpectrumIntensity;
+        public double TotalSpectrumIntensity { get; private set; }
         public readonly string peptideSpectrumLabel;
         public readonly List<ChargeStateIsotopeCluster> ChargeStateClusters;
 
-        public PeptideSpectrum(PeptideWithSetModifications peptideWithSetModifications, int[] chargeStates, double[] envelopeAbundances, double totalSpectrumIntensity = 1)
+        public PeptideSpectrum(PeptideWithSetModifications peptideWithSetModifications, int maxNumberChargeStates, int minChargeState, int maxChargeState, double minEnvelopeAbundance = 0.1, double totalSpectrumIntensity = 1)
         {
             this.peptideWithSetModifications = peptideWithSetModifications;
-            this.chargeStates = chargeStates;
-            this.envelopeAbundances = envelopeAbundances;
-            this.totalSpectrumIntensity = totalSpectrumIntensity;
+            this.chargeStatesAndEnvelopeAbundances = new ChargeStatesAndEnvelopeAbundances(maxNumberChargeStates, minChargeState, maxChargeState, minEnvelopeAbundance);
+            this.TotalSpectrumIntensity = totalSpectrumIntensity;
             this.ChargeStateClusters = PopulateClusters();
             var mzAndIntensityValues = PopulateSpectrum();
             this.mzValues = mzAndIntensityValues.Item1.ToArray();
@@ -33,12 +31,22 @@ namespace MS1_DataSimulator
             this.peptideSpectrumLabel = GetLabel();
         }
 
+        public void UpdateSpectrumWithNewTotalIntensity(double newTotalIntensity) 
+        {
+            double intensityMutiplier = newTotalIntensity / TotalSpectrumIntensity;
+
+            for (int i = 0; i < intensityValues.Length; i++)
+            {
+                intensityValues[i] *= intensityMutiplier;
+            }
+            TotalSpectrumIntensity = intensityValues.Sum();
+        }
 
         private List<ChargeStateIsotopeCluster> PopulateClusters() 
         {
             List<ChargeStateIsotopeCluster> chargeStateClusters = new();
 
-            foreach (int chargeState in chargeStates)
+            foreach (int chargeState in chargeStatesAndEnvelopeAbundances.ChargeStates)
             {
                 IsotopicMassesAndNormalizedAbundances unchargedParentCluster = new IsotopicMassesAndNormalizedAbundances(peptideWithSetModifications);
                 (double[], double[]) spectrum = unchargedParentCluster.ComputeMzAndIntensity(chargeState);
@@ -59,7 +67,7 @@ namespace MS1_DataSimulator
                 }
                 foreach (double intensity in ChargeStateClusters[i].unitSpectrum.Item2)
                 {
-                    intValues.Add(intensity * envelopeAbundances[i]);
+                    intValues.Add(intensity * chargeStatesAndEnvelopeAbundances.EnvelopeAbundances[i]);
                 }
             }
 
@@ -76,7 +84,7 @@ namespace MS1_DataSimulator
 
         private string? GetLabel()
         {
-            throw new NotImplementedException();
+            return string.Empty;
         }
 
     }
