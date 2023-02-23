@@ -9,7 +9,7 @@ using UsefulProteomicsDatabases;
 
 namespace MS1_DataSimulator
 {
-    internal class DigestProteinsIntoPeptides
+    public class DigestProteinsIntoPeptides
     {
         public readonly PeptideWithSetModifications[] Peptides;
 
@@ -20,8 +20,8 @@ namespace MS1_DataSimulator
             {
                 if (File.Exists(path))
                 {
-                    List<Protein> proteins = ProteinDbLoader.LoadProteinFasta(path, true, DecoyType.Reverse, false, out var a,
-                        ProteinDbLoader.UniprotAccessionRegex, ProteinDbLoader.UniprotFullNameRegex, ProteinDbLoader.UniprotNameRegex, ProteinDbLoader.UniprotGeneNameRegex,
+                    List<Protein> proteins = ProteinDbLoader.LoadProteinFasta(path, true, DecoyType.None,
+                        false, out var errors, ProteinDbLoader.UniprotAccessionRegex, ProteinDbLoader.UniprotFullNameRegex, ProteinDbLoader.UniprotNameRegex, ProteinDbLoader.UniprotGeneNameRegex,
                         ProteinDbLoader.UniprotOrganismRegex);
                     foreach (Protein protein in proteins)
                     {
