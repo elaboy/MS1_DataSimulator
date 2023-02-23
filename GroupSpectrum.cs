@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MS1_DataSimulator
 {
-    internal class GroupSpectrum
+    internal class Scan
     {
         public readonly PeptideWithSetModifications[] peptides;
         public readonly double[] peptideAbundances;
@@ -17,15 +17,15 @@ namespace MS1_DataSimulator
         public readonly List<double> peptideTotalSpectrumIntensity;
         public readonly double[] mzValues;
         public readonly double[] intensityValues;
-        public readonly int spectrumNumber;
+        public readonly int scanNumber;
         public readonly string label;
 
-        public GroupSpectrum(PeptideWithSetModifications[] peptides, double[] peptideAbundances, List<int[]> peptideChargeStates, int spectrumNumber)
+        public Scan(PeptideWithSetModifications[] peptides, double[] peptideAbundances, List<int[]> peptideChargeStates, int scanNumber)
         {
             this.peptides = peptides;
             this.peptideAbundances = peptideAbundances;
             this.peptideChargeStates = peptideChargeStates;
-            this.spectrumNumber = spectrumNumber;
+            this.scanNumber = scanNumber;
 
             (double[], double[]) spectrum = PopulateSpectrum();
 

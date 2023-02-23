@@ -12,14 +12,14 @@ namespace MS1_DataSimulator
         public readonly string Spectrum;
         public readonly string ClusterLabel;
 
-        public Label(string peptideName, ChargeStateCluster cluster, int maxSpectrumLength)
+        public Label(string peptideName, ChargeStateIsotopeCluster cluster, int maxSpectrumLength)
         {
             this.PeptideName = peptideName;
             this.Spectrum = GetPaddedSpectrum(cluster, maxSpectrumLength);
             this.clusterLabel = clusterLabel;
         }
 
-        private string GetPaddedSpectrum(ChargeStateCluster cluster, int maxLength)
+        private string GetPaddedSpectrum(ChargeStateIsotopeCluster cluster, int maxLength)
         {
             List<double> spectrum = new();
             spectrum.AddRange(cluster.unitSpectrum.Item1.ToList());

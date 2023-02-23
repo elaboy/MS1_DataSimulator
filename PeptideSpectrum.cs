@@ -18,7 +18,7 @@ namespace MS1_DataSimulator
         public readonly double[] intensityValues;
         public readonly double totalSpectrumIntensity;
         public readonly string peptideSpectrumLabel;
-        public readonly List<ChargeStateCluster> ChargeStateClusters;
+        public readonly List<ChargeStateIsotopeCluster> ChargeStateClusters;
 
         public PeptideSpectrum(PeptideWithSetModifications peptideWithSetModifications, int[] chargeStates, double[] envelopeAbundances, double totalSpectrumIntensity = 1)
         {
@@ -34,15 +34,15 @@ namespace MS1_DataSimulator
         }
 
 
-        private List<ChargeStateCluster> PopulateClusters() 
+        private List<ChargeStateIsotopeCluster> PopulateClusters() 
         {
-            List<ChargeStateCluster> chargeStateClusters = new();
+            List<ChargeStateIsotopeCluster> chargeStateClusters = new();
 
             foreach (int chargeState in chargeStates)
             {
                 IsotopicMassesAndNormalizedAbundances unchargedParentCluster = new IsotopicMassesAndNormalizedAbundances(peptideWithSetModifications);
                 (double[], double[]) spectrum = unchargedParentCluster.ComputeMzAndIntensity(chargeState);
-                chargeStateClusters.Add(new ChargeStateCluster(spectrum,chargeState));
+                chargeStateClusters.Add(new ChargeStateIsotopeCluster(spectrum,chargeState));
             }
             return chargeStateClusters;
         }
