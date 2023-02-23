@@ -9,7 +9,7 @@ using UsefulProteomicsDatabases;
 
 namespace MS1_DataSimulator
 {
-    public class DigestProteinsIntoPeptides
+    internal class DigestProteinsIntoPeptides
     {
         public readonly PeptideWithSetModifications[] Peptides;
 
