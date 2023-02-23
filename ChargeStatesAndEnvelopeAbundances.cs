@@ -38,8 +38,8 @@ namespace MS1_DataSimulator
             }
             ChargeStates = chargeStates.ToArray();
 
-            //List<double> envelopeAbundances = new();
-
+            //abundance of each envelope is chosen randomly with the min abundance definced in the constructor. 
+            //the sum of all envelope abundances equals 1
             double[] envelopeAbundances= new double[numChargeStates];
             for (int i = 0; i < envelopeAbundances.Length; i++)
             {
@@ -51,6 +51,7 @@ namespace MS1_DataSimulator
             {
                 envelopeAbundances[i] /= arraySum;
             }
+            EnvelopeAbundances= envelopeAbundances;
         }
     }
 }

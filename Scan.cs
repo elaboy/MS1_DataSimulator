@@ -10,44 +10,48 @@ namespace MS1_DataSimulator
 {
     internal class Scan
     {
-        public readonly PeptideWithSetModifications[] peptides;
-        public readonly double[] peptideAbundances;
+        public readonly List<PeptideWithSetModifications> peptides;
+        public readonly List<double> peptidePeakAreas;
         public readonly List<int[]> peptideChargeStates;
-        public readonly List<double[]> envelopeAbundances;
-        public readonly List<double> peptideTotalSpectrumIntensity;
-        public readonly double[] mzValues;
-        public readonly double[] intensityValues;
         public readonly int scanNumber;
         public readonly string label;
 
-        public Scan(PeptideWithSetModifications[] peptides, double[] peptideAbundances, List<int[]> peptideChargeStates, int scanNumber)
+        public Scan(List<PeptideWithSetModifications> peptides, List<double> peptidePeakAreas, List<int[]> peptideChargeStates, int scanNumber)
         {
             this.peptides = peptides;
-            this.peptideAbundances = peptideAbundances;
+            this.peptidePeakAreas = peptidePeakAreas;
             this.peptideChargeStates = peptideChargeStates;
             this.scanNumber = scanNumber;
-
-            (double[], double[]) spectrum = PopulateSpectrum();
-
-            this.mzValues = spectrum.Item1;
-            this.intensityValues = spectrum.Item2;
             this.label = GetLabel();
         }
 
-        private (double[], double[]) PopulateSpectrum()
+        public (double[], double[]) Spectrum()
         {
             List<double> mzs = new();
             List<double> intensities = new();
 
-            for (int i = 0; i < peptides.Length; i++)
+            int maxNumberChargeStates = 3;
+            int minChargeState = 1;
+            int maxChargeState = 4;
+            double minEnvelopeAbundance = 0.1;
+            double totalSpectrumIntensity = 1;
+
+
+            for (int i = 0; i < peptides.Count; i++)
             {
-                PeptideSpectrum spectrum = new(peptides[i], peptideChargeStates[i], envelopeAbundances[i], peptideTotalSpectrumIntensity[i]);
+                PeptideSpectrum spectrum = new(peptides[i], maxNumberChargeStates, minChargeState, maxChargeState, minEnvelopeAbundance, totalSpectrumIntensity);
                 mzs.AddRange(spectrum.mzValues);
                 intensities.AddRange(spectrum.intensityValues);
             }
             intensities = intensities.SortLike(mzs.ToArray()).ToList();
             mzs.Sort();
             return (mzs.ToArray(), intensities.ToArray());
+        }
+        public void AddPeptideToScan(PeptideWithSetModifications peptide, double abundance, int[] chargeStates)
+        {
+            peptides.Add(peptide);
+            peptidePeakAreas.Add(abundance);
+            peptideChargeStates.Add(chargeStates);
         }
         private static string GetLabel()
         {

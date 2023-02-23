@@ -16,7 +16,7 @@ namespace MS1_DataSimulator
         {
             this.PeptideName = peptideName;
             this.Spectrum = GetPaddedSpectrum(cluster, maxSpectrumLength);
-            this.clusterLabel = clusterLabel;
+            this.ClusterLabel = GetLabel();
         }
 
         private string GetPaddedSpectrum(ChargeStateIsotopeCluster cluster, int maxLength)
@@ -29,6 +29,11 @@ namespace MS1_DataSimulator
             spectrum.AddRange(zeros);
 
             return String.Join('\t',spectrum.ToArray());
+        }
+
+        private string GetLabel()
+        {
+            return string.Empty;
         }
     }
 }
