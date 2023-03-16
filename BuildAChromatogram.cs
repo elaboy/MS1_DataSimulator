@@ -50,10 +50,10 @@ namespace MS1_DataSimulator
             }
             this.mzMLFile = scans.CreateMZML();
 
-            
+            System.IO.StreamWriter file = new StreamWriter("");
+            file.WriteLine(this.mzMLFile);
+            file.Close();
         }
-
-
         
     }
 }
