@@ -49,10 +49,17 @@ namespace MS1_DataSimulator
                 centerOfPeptide++;
             }
             this.mzMLFile = scans.CreateMZML();
+            int stop = 0;
+               
 
-            System.IO.StreamWriter file = new StreamWriter("");
-            file.WriteLine(this.mzMLFile);
-            file.Close();
+            //System.IO.StreamWriter file = new StreamWriter(@"C:\Users\Edwin\Documents\GitHub\MS1_DataSimulator\test.mzML");
+            //file.write(this.mzMLFile);
+            //file.Close();
+
+            //using FileStream fs = File.Create(@"C:\Users\Edwin\Documents\GitHub\MS1_DataSimulator\test.mzML");
+            
+
+            //File.WriteAllLines(@"C:\Users\Edwin\Documents\GitHub\MS1_DataSimulator\test.mzML", this.mzMLFile);
         }
         
     }

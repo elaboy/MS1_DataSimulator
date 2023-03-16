@@ -1,4 +1,5 @@
-﻿using Proteomics.ProteolyticDigestion;
+﻿using MassSpectrometry;
+using Proteomics.ProteolyticDigestion;
 using SharpLearning.Containers.Arithmetic;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,29 @@ namespace MS1_DataSimulator
             this.peptideChargeStates = peptideChargeStates;
             this.scanNumber = scanNumber;
             this.label = GetLabel();
+        }
+
+        public MzSpectrum ToMzSpectrum()
+        {
+            List<double> mzs = new();
+            List<double> intensities = new();
+
+            int maxNumberChargeStates = 3;
+            int minChargeState = 1;
+            int maxChargeState = 4;
+            double minEnvelopeAbundance = 0.1;
+            double totalSpectrumIntensity = 1;
+
+
+            for (int i = 0; i < peptides.Count; i++)
+            {
+                PeptideSpectrum spectrum = new(peptides[i], maxNumberChargeStates, minChargeState, maxChargeState, minEnvelopeAbundance, totalSpectrumIntensity);
+                mzs.AddRange(spectrum.mzValues);
+                intensities.AddRange(spectrum.intensityValues);
+            }
+            intensities = intensities.SortLike(mzs.ToArray()).ToList();
+            mzs.Sort();
+            return new MzSpectrum(mzs.ToArray(), intensities.ToArray(), true);
         }
 
         public (double[], double[]) Spectrum()
@@ -58,5 +82,6 @@ namespace MS1_DataSimulator
             string label = string.Empty;
             return label;
         }        
+
     }
 }
