@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MassSpectrometry;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ namespace MS1_DataSimulator
     {
         List<string> FullPathsToFastas;
         double TrainingFraction;
+        MsDataFile mzMLFile;
 
         public BuildAChromatogram(List<string> fullPathsToFastas, double trainingFraction)
         {
@@ -46,7 +48,11 @@ namespace MS1_DataSimulator
                 }
                 centerOfPeptide++;
             }
+            this.mzMLFile = scans.CreateMZML();
+
+            
         }
+
 
         
     }
